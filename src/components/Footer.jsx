@@ -126,13 +126,13 @@ const Footer = () => {
             {/* ── LEFT: Brand ── */}
             <motion.div variants={itemVariants} className="flex flex-col items-center md:items-start text-center md:text-left">
               <span className="text-3xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent tracking-widest mb-6">
-                MAHTAB.
+                MAHTAB
               </span>
-              
+
               <div className="mb-7">
                 <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-md relative overflow-hidden group/status">
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-emerald-400/5 to-transparent -translate-x-full group-hover/status:translate-x-full transition-transform duration-1000" />
-                  
+
                   <span className="relative flex h-1.5 w-1.5">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                     <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
@@ -174,7 +174,7 @@ const Footer = () => {
                   </h3>
                   <div className="relative h-px w-8 overflow-hidden mx-auto">
                     <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary" />
-                    <motion.div 
+                    <motion.div
                       className="absolute inset-0 bg-white/40"
                       animate={{ x: ['-100%', '100%'] }}
                       transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
@@ -219,7 +219,7 @@ const Footer = () => {
                   </h3>
                   <div className="relative h-px w-8 overflow-hidden mx-auto">
                     <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary" />
-                    <motion.div 
+                    <motion.div
                       className="absolute inset-0 bg-white/40"
                       animate={{ x: ['-100%', '100%'] }}
                       transition={{ duration: 2.5, repeat: Infinity, ease: "linear", delay: 0.5 }}
@@ -273,7 +273,7 @@ const Footer = () => {
         {/* ── BOTTOM BAR ── */}
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="h-px w-full bg-gradient-to-r from-transparent via-white/[0.1] to-transparent mb-6" />
-          
+
           <motion.div
             variants={itemVariants}
             className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 text-[11px] sm:text-xs font-medium text-gray-500"

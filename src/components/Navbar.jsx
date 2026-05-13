@@ -28,7 +28,7 @@ const Navbar = ({ currentTheme, onThemeChange }) => {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
-      
+
       const sections = navLinks.map(link => link.name.toLowerCase());
       for (const section of sections.reverse()) {
         const element = document.getElementById(section);
@@ -67,13 +67,13 @@ const Navbar = ({ currentTheme, onThemeChange }) => {
         "max-w-7xl mx-auto flex items-center justify-between transition-all duration-500 px-6",
         isScrolled ? "py-3" : "py-6"
       )}>
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           className="text-2xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent tracking-tighter cursor-pointer"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
-          MAHTAB.
+          MAHTAB
         </motion.div>
 
         {/* Desktop Menu */}
@@ -100,14 +100,14 @@ const Navbar = ({ currentTheme, onThemeChange }) => {
           <div className="flex items-center space-x-6 pl-6 border-l border-white/10">
             {/* Theme Switcher */}
             <div className="relative">
-              <button 
+              <button
                 onClick={() => setIsThemeOpen(!isThemeOpen)}
                 className="p-2 glass rounded-full text-gray-400 hover:text-primary transition-colors flex items-center gap-2 px-3 border-white/5"
               >
                 <Palette size={18} />
                 <ChevronDown size={14} className={cn("transition-transform duration-300", isThemeOpen ? "rotate-180" : "")} />
               </button>
-              
+
               <AnimatePresence>
                 {isThemeOpen && (
                   <motion.div
@@ -151,7 +151,7 @@ const Navbar = ({ currentTheme, onThemeChange }) => {
 
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center gap-4">
-          <button 
+          <button
             onClick={() => {
               setIsThemeOpen(!isThemeOpen);
               setIsMobileMenuOpen(false);
@@ -160,7 +160,7 @@ const Navbar = ({ currentTheme, onThemeChange }) => {
           >
             <Palette size={20} />
           </button>
-          <button 
+          <button
             onClick={() => {
               setIsMobileMenuOpen(!isMobileMenuOpen);
               setIsThemeOpen(false);
@@ -184,7 +184,7 @@ const Navbar = ({ currentTheme, onThemeChange }) => {
               onClick={() => setIsMobileMenuOpen(false)}
               className="fixed inset-0 bg-dark/60 backdrop-blur-md z-[110] md:hidden"
             />
-            
+
             <motion.div
               initial={{ opacity: 0, x: "100%" }}
               animate={{ opacity: 1, x: 0 }}
@@ -215,7 +215,7 @@ const Navbar = ({ currentTheme, onThemeChange }) => {
                       {link.name}
                     </motion.a>
                   ))}
-                  
+
                   <div className="pt-10 border-t border-white/5 flex gap-4">
                     <a href="#" className="flex-1 py-4 glass rounded-2xl text-gray-400 flex items-center justify-center gap-2 hover:text-white transition-colors">
                       <Github size={20} /> <span className="text-xs font-bold uppercase tracking-widest">Github</span>
@@ -242,40 +242,40 @@ const Navbar = ({ currentTheme, onThemeChange }) => {
               onClick={() => setIsThemeOpen(false)}
               className="absolute inset-0 bg-dark/60 backdrop-blur-md"
             />
-             <motion.div
-                initial={{ y: "100%" }}
-                animate={{ y: 0 }}
-                exit={{ y: "100%" }}
-                transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="w-full glass rounded-t-[2.5rem] p-8 border-t border-white/10 relative z-10 shadow-[0_-20px_40px_rgba(0,0,0,0.4)]"
-              >
-                <div className="w-12 h-1 bg-white/10 rounded-full mx-auto mb-6" />
-                <div className="flex justify-between items-center mb-8">
-                  <h3 className="text-2xl font-black uppercase tracking-tighter">Choose Theme</h3>
-                  <button onClick={() => setIsThemeOpen(false)} className="p-2 text-gray-400 hover:text-white"><X size={24} /></button>
-                </div>
-                <div className="grid grid-cols-1 gap-4">
-                  {themes.map((theme) => (
-                    <button
-                      key={theme.id}
-                      onClick={() => {
-                        onThemeChange(theme.id);
-                        setIsThemeOpen(false);
-                      }}
-                      className={cn(
-                        "w-full flex items-center justify-between p-5 rounded-2xl transition-all text-sm font-bold uppercase tracking-widest",
-                        currentTheme === theme.id ? "bg-primary text-white shadow-lg shadow-primary/20" : "bg-white/5 text-gray-400 border border-white/5"
-                      )}
-                    >
-                      <div className="flex items-center gap-4">
-                        <div className={cn("w-4 h-4 rounded-full", theme.color)}></div>
-                        {theme.name}
-                      </div>
-                      {currentTheme === theme.id && <Check size={20} />}
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="w-full glass rounded-t-[2.5rem] p-8 border-t border-white/10 relative z-10 shadow-[0_-20px_40px_rgba(0,0,0,0.4)]"
+            >
+              <div className="w-12 h-1 bg-white/10 rounded-full mx-auto mb-6" />
+              <div className="flex justify-between items-center mb-8">
+                <h3 className="text-2xl font-black uppercase tracking-tighter">Choose Theme</h3>
+                <button onClick={() => setIsThemeOpen(false)} className="p-2 text-gray-400 hover:text-white"><X size={24} /></button>
+              </div>
+              <div className="grid grid-cols-1 gap-4">
+                {themes.map((theme) => (
+                  <button
+                    key={theme.id}
+                    onClick={() => {
+                      onThemeChange(theme.id);
+                      setIsThemeOpen(false);
+                    }}
+                    className={cn(
+                      "w-full flex items-center justify-between p-5 rounded-2xl transition-all text-sm font-bold uppercase tracking-widest",
+                      currentTheme === theme.id ? "bg-primary text-white shadow-lg shadow-primary/20" : "bg-white/5 text-gray-400 border border-white/5"
+                    )}
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className={cn("w-4 h-4 rounded-full", theme.color)}></div>
+                      {theme.name}
+                    </div>
+                    {currentTheme === theme.id && <Check size={20} />}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
           </div>
         )}
       </AnimatePresence>
