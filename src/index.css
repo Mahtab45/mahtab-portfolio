@@ -1,6 +1,11 @@
 @import "tailwindcss";
 
 @theme {
+  /* ── Font Families ── */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Satoshi', 'Inter', system-ui, sans-serif;
+
+  /* ── Colors ── */
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
   --color-accent: var(--accent);
@@ -8,6 +13,7 @@
   --color-glass: rgba(255, 255, 255, 0.05);
   --color-glass-border: rgba(255, 255, 255, 0.1);
 
+  /* ── Animations ── */
   --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   --animate-blob: blob 7s infinite;
   --animate-border-flow: border-flow 3s linear infinite;
@@ -32,8 +38,36 @@
   --accent: #10b981;
   background-color: #030712;
   color: #f3f4f6;
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   transition: all 0.5s ease-in-out;
+}
+
+/* ── Global Typography ── */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+}
+
+/* Satoshi for all heading levels */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Satoshi', 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Display utility class for one-off display text */
+.font-display {
+  font-family: 'Satoshi', 'Inter', system-ui, sans-serif;
+  letter-spacing: -0.03em;
 }
 
 [data-theme='green'] {
@@ -46,11 +80,6 @@
   --primary: #f59e0b;
   --secondary: #ef4444;
   --accent: #ec4899;
-}
-
-body {
-  margin: 0;
-  padding: 0;
 }
 
 /* Glassmorphism utility */
