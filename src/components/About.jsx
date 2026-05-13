@@ -87,7 +87,7 @@ const About = () => {
                                 About <span className="bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">Me</span>
                             </motion.h2>
 
-                            {/* Description */}
+                            {/* Description https://vercel.com/mahtab-alam-s-projects/mahtab-portfolio/settings/domains*/}
                             <motion.p variants={childVariants} className="text-lg text-gray-400 mb-10 leading-relaxed max-w-xl">
                                 I focus on solving <span className="text-white font-bold">real-world problems</span>, not just writing code.
                                 I enjoy turning complex ideas into simple, usable solutions that create real impact.
@@ -161,7 +161,7 @@ const About = () => {
                                         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
                                         className="relative group will-change-transform transform-gpu"
                                     >
-                                        <motion.div 
+                                        <motion.div
                                             whileHover={{ y: -4, scale: 1.02, zIndex: 20 }}
                                             className="glass p-6 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-primary/40 hover:shadow-[0_0_25px_rgba(59,130,246,0.2)] transition-[background-color,border-color,box-shadow] duration-300 ease-out origin-center hover:z-20"
                                         >
