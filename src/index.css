@@ -3,7 +3,7 @@
 @theme {
   /* ── Font Families ── */
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-display: 'Satoshi', 'Inter', system-ui, sans-serif;
+  --font-display: 'Inter', system-ui, -apple-system, sans-serif;
 
   /* ── Colors ── */
   --color-primary: var(--primary);
@@ -55,19 +55,17 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* Satoshi for all heading levels */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Satoshi', 'Inter', system-ui, sans-serif;
-  font-weight: 700;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-weight: 800;
   line-height: 1.15;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Display utility class for one-off display text */
 .font-display {
-  font-family: 'Satoshi', 'Inter', system-ui, sans-serif;
-  letter-spacing: -0.03em;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.04em;
 }
 
 [data-theme='green'] {
