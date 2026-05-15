@@ -2,48 +2,54 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { ExternalLink, ArrowUpRight } from 'lucide-react';
 import SectionHeading from './SectionHeading';
+import saplestonImg from '../assets/projects/sapleston.webp';
+import webdesignromaImg from '../assets/projects/webdesignroma.webp';
+import gopienImg from '../assets/projects/gopien.webp';
+import dishaImg from '../assets/projects/disha-classes.webp';
+import winecaveImg from '../assets/projects/wine.jpg';
+import ncbaceImg from '../assets/projects/ncbace.webp';
 
 const projects = [
 
   {
     title: "NCB-ACE",
     desc: "A sports management and coaching platform designed to track player performance, manage training programs, and streamline academy operations.",
-    image: "https://images.pexels.com/photos/30387496/pexels-photo-30387496.jpeg",
+    image: ncbaceImg,
     link: "https://ncbace.com",
     tags: ["SportsTech", "Performance Tracking", "Management System"]
   },
   {
     title: "Wine Cave",
     desc: "A tourism and hospitality website showcasing wine experiences, cave tours, and booking services with rich visual storytelling.",
-    image: "https://hendersoncastle.com/application/files/1217/0301/5327/Wine-Tasting-Banner-Henderson-Castle-Best-Bed-and-Breafast-Michigan-8.jpg",
+    image: winecaveImg,
     link: "https://www.kvareliwinecave.com",
     tags: ["Tourism", "Hospitality", "Booking", "WordPress", "UI/UX"]
   },
   {
     title: "Disha Classes",
     desc: "An educational platform offering course management, student engagement, and online learning resources for academic growth.",
-    image: "https://images.pexels.com/photos/8199166/pexels-photo-8199166.jpeg",
+    image: dishaImg,
     link: "https://dishaclasses.org/",
     tags: ["EdTech", "Course Management", "Learning Platform", "Responsive Design"]
   },
   {
     title: "Gopien",
     desc: "A digital wallet and fintech platform enabling secure transactions, wallet management, saving groups, and peer-to-peer payments.",
-    image: "https://media.istockphoto.com/id/1424168753/photo/concept-for-online-shopping-and-e-commerce-using-a-laptop-computer-and-a-delivery-vehicle-to.jpg?s=612x612&w=0&k=20&c=pYXVpbwMDv2jKBZjPDCHBzA8LhqtV4_Au7OkCBNWa1c=",
+    image: gopienImg,
     link: "https://gopien.com",
     tags: ["FinTech", "Digital Wallet", "Payments", "Security"]
   },
   {
     title: "WebDesignRoma",
     desc: "A digital agency website focused on web design, branding, and online business solutions with a modern and responsive layout.",
-    image: "https://images.pexels.com/photos/6476257/pexels-photo-6476257.jpeg",
+    image: webdesignromaImg,
     link: "http://webdesignroma.com/",
     tags: ["Web Design", "Agency", "Branding", "Responsive", "UI/UX"]
   },
   {
     title: "Sapleston",
     desc: "Manufacturer of innovative natural stone veneer products offering flexible, lightweight stone sheets used for interior and exterior wall design, cladding, and architectural applications.",
-    image: "https://plus.unsplash.com/premium_photo-1670168827639-033c8baa538e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image: saplestonImg,
     link: "https://www.sapleston.com",
     tags: ["Construction", "Stone Veneer", "Architecture", "Interior Design", "Manufacturing"]
   }
