@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, MessageSquare, User, AtSign, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import SectionHeading from './SectionHeading';
@@ -69,18 +69,19 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-20 md:py-24 px-3 sm:px-4 md:px-6 relative overflow-hidden">
+    <section id="contact" className="py-20 md:py-24 px-3 sm:px-4 md:px-6 relative overflow-hidden transform-gpu">
       <div className="max-w-7xl mx-auto relative">
 
         {/* Toast Notification */}
-        <div className="fixed bottom-8 right-8 z-50 flex flex-col gap-4">
+        <div className="fixed bottom-8 right-8 z-50 flex flex-col gap-4 pointer-events-none">
           <AnimatePresence>
             {status === 'success' && (
               <motion.div
                 initial={{ opacity: 0, y: 50, scale: 0.9 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-                className="bg-[#10b981]/10 border border-[#10b981]/20 backdrop-blur-md text-white px-6 py-4 rounded-2xl flex items-center gap-4 shadow-[0_10px_40px_-10px_rgba(16,185,129,0.3)]"
+                className="bg-[#10b981]/10 border border-[#10b981]/20 backdrop-blur-md text-white px-6 py-4 rounded-2xl flex items-center gap-4 shadow-[0_10px_40px_-10px_rgba(16,185,129,0.3)] pointer-events-auto transform-gpu"
+                role="alert"
               >
                 <div className="bg-[#10b981]/20 p-2 rounded-full text-[#10b981]">
                   <CheckCircle2 size={24} />
@@ -97,7 +98,8 @@ const Contact = () => {
                 initial={{ opacity: 0, y: 50, scale: 0.9 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-                className="bg-red-500/10 border border-red-500/20 backdrop-blur-md text-white px-6 py-4 rounded-2xl flex items-center gap-4 shadow-[0_10px_40px_-10px_rgba(239,68,68,0.3)]"
+                className="bg-red-500/10 border border-red-500/20 backdrop-blur-md text-white px-6 py-4 rounded-2xl flex items-center gap-4 shadow-[0_10px_40px_-10px_rgba(239,68,68,0.3)] pointer-events-auto transform-gpu"
+                role="alert"
               >
                 <div className="bg-red-500/20 p-2 rounded-full text-red-500">
                   <AlertCircle size={24} />
@@ -130,7 +132,7 @@ const Contact = () => {
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.4, ease: "easeInOut" }}
                 viewport={{ once: true }}
-                className="bg-white/5 p-5 sm:p-6 rounded-3xl border border-white/5 flex items-center gap-4 sm:gap-6 group cursor-pointer hover:bg-white/10 hover:border-primary/40 transition-all duration-300 ease-in-out active:scale-95 no-underline"
+                className="bg-white/5 p-5 sm:p-6 rounded-3xl border border-white/5 flex items-center gap-4 sm:gap-6 group cursor-pointer hover:bg-white/10 hover:border-primary/40 transition-all duration-300 ease-in-out active:scale-95 no-underline transform-gpu"
                 aria-label="Send an email to mahtabalam2896@gmail.com"
               >
                 <div className="p-3 sm:p-4 glass rounded-2xl text-white/40 group-hover:text-primary group-hover:shadow-[0_0_20px] group-hover:shadow-primary/40 transition-all duration-300 ease-in-out shrink-0">
@@ -150,7 +152,7 @@ const Contact = () => {
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.4, ease: "easeInOut", delay: 0.1 }}
                 viewport={{ once: true }}
-                className="bg-white/5 p-5 sm:p-6 rounded-3xl border border-white/5 flex items-center gap-4 sm:gap-6 group cursor-pointer hover:bg-white/10 hover:border-primary/40 transition-all duration-300 ease-in-out active:scale-95 no-underline"
+                className="bg-white/5 p-5 sm:p-6 rounded-3xl border border-white/5 flex items-center gap-4 sm:gap-6 group cursor-pointer hover:bg-white/10 hover:border-primary/40 transition-all duration-300 ease-in-out active:scale-95 no-underline transform-gpu"
                 aria-label="Call +91 9113130267"
               >
                 <div className="p-3 sm:p-4 glass rounded-2xl text-white/40 group-hover:text-primary group-hover:shadow-[0_0_20px] group-hover:shadow-primary/40 transition-all duration-300 ease-in-out shrink-0">
@@ -170,7 +172,8 @@ const Contact = () => {
                 whileTap={{ scale: 0.95 }}
                 transition={{ duration: 0.4, ease: "easeInOut", delay: 0.2 }}
                 viewport={{ once: true }}
-                className="bg-white/5 p-5 sm:p-6 rounded-3xl border border-white/5 flex items-center gap-4 sm:gap-6 group cursor-pointer hover:bg-white/10 hover:border-primary/40 transition-all duration-300 ease-in-out active:scale-95"
+                className="bg-white/5 p-5 sm:p-6 rounded-3xl border border-white/5 flex items-center gap-4 sm:gap-6 group cursor-pointer hover:bg-white/10 hover:border-primary/40 transition-all duration-300 ease-in-out active:scale-95 transform-gpu"
+                aria-label="Location: Delhi, India"
               >
                 <div className="p-3 sm:p-4 glass rounded-2xl text-white/40 group-hover:text-primary group-hover:shadow-[0_0_20px] group-hover:shadow-primary/40 transition-all duration-300 ease-in-out shrink-0">
                   <MapPin size={24} />
@@ -185,7 +188,7 @@ const Contact = () => {
             {/* Availability Badge */}
             <motion.div
               whileHover={{ scale: 1.02 }}
-              className="bg-white/5 p-4 sm:p-6 rounded-3xl border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full max-w-sm md:max-w-xl mx-auto lg:mx-0 group cursor-pointer hover:bg-white/10 hover:border-primary/40 transition-all duration-300 ease-in-out"
+              className="bg-white/5 p-4 sm:p-6 rounded-3xl border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 w-full max-w-sm md:max-w-xl mx-auto lg:mx-0 group cursor-pointer hover:bg-white/10 hover:border-primary/40 transition-all duration-300 ease-in-out transform-gpu"
             >
               <div className="flex items-center gap-3">
                 <div className="w-3 h-3 bg-primary rounded-full animate-pulse shadow-[0_0_10px] shadow-primary/50 group-hover:shadow-[0_0_15px] group-hover:shadow-primary/70 transition-all duration-300"></div>
@@ -200,72 +203,66 @@ const Contact = () => {
             variants={formVariants}
             initial="hidden"
             whileInView="visible"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="lg:col-span-3 bg-white/5 p-4 sm:p-6 md:p-10 rounded-3xl border border-white/5 relative overflow-hidden w-full max-w-sm md:max-w-xl mx-auto lg:mx-0 group hover:bg-white/10 hover:border-primary/40 hover:shadow-[0_0_20px] hover:shadow-primary/40 transition-all duration-300 ease-in-out active:scale-95"
+            className="lg:col-span-3 bg-white/5 p-4 sm:p-6 md:p-10 rounded-3xl border border-white/5 relative overflow-hidden w-full max-w-sm md:max-w-xl mx-auto lg:mx-0 group hover:bg-white/10 hover:border-primary/40 transition-all duration-300 ease-in-out transform-gpu"
           >
             <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
               <div className="grid md:grid-cols-2 gap-6">
                 <motion.div variants={itemVariants} className="space-y-2">
-                  <label className="text-sm text-gray-400 flex items-center gap-2">
+                  <label htmlFor="name" className="text-sm text-gray-400 flex items-center gap-2">
                     <User size={16} /> Your Name
                   </label>
-                  <motion.input
-                    whileFocus={{ scale: 1.02 }}
-                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                  <input
+                    id="name"
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
                     required
                     placeholder="John Doe"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-primary/50 focus:shadow-[0_0_15px] focus:shadow-primary/30 hover:border-white/20 transition-all text-white"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-primary/50 focus:shadow-[0_0_15px] focus:shadow-primary/30 hover:border-white/20 transition-all text-white transform-gpu"
                   />
                 </motion.div>
                 <motion.div variants={itemVariants} className="space-y-2">
-                  <label className="text-sm text-gray-400 flex items-center gap-2">
+                  <label htmlFor="email" className="text-sm text-gray-400 flex items-center gap-2">
                     <AtSign size={16} /> Email Address
                   </label>
-                  <motion.input
-                    whileFocus={{ scale: 1.02 }}
-                    transition={{ duration: 0.25, ease: "easeInOut" }}
+                  <input
+                    id="email"
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
                     required
                     placeholder="john@example.com"
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-primary/50 focus:shadow-[0_0_15px] focus:shadow-primary/30 hover:border-white/20 transition-all text-white"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-primary/50 focus:shadow-[0_0_15px] focus:shadow-primary/30 hover:border-white/20 transition-all text-white transform-gpu"
                   />
                 </motion.div>
               </div>
 
               <motion.div variants={itemVariants} className="space-y-2">
-                <label className="text-sm text-gray-400 flex items-center gap-2">
+                <label htmlFor="message" className="text-sm text-gray-400 flex items-center gap-2">
                   <MessageSquare size={16} /> Message
                 </label>
-                <motion.textarea
-                  whileFocus={{ scale: 1.02 }}
-                  transition={{ duration: 0.25, ease: "easeInOut" }}
+                <textarea
+                  id="message"
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
                   required
                   rows="5"
                   placeholder="How can I help you?"
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 sm:px-6 py-4 outline-none focus:border-primary/50 focus:shadow-[0_0_15px] focus:shadow-primary/30 hover:border-white/20 transition-all text-white resize-none"
-                ></motion.textarea>
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 sm:px-6 py-4 outline-none focus:border-primary/50 focus:shadow-[0_0_15px] focus:shadow-primary/30 hover:border-white/20 transition-all text-white resize-none transform-gpu"
+                ></textarea>
               </motion.div>
 
               <motion.div variants={itemVariants}>
                 <motion.button
-                  whileHover={{ scale: status !== 'loading' ? 1.03 : 1 }}
-                  whileTap={{ scale: status !== 'loading' ? 0.97 : 1 }}
+                  whileHover={{ scale: status !== 'loading' ? 1.02 : 1 }}
+                  whileTap={{ scale: status !== 'loading' ? 0.98 : 1 }}
                   transition={{ duration: 0.3 }}
                   disabled={status === 'loading'}
-                  className="w-full bg-primary text-white font-bold py-5 rounded-2xl flex items-center justify-center gap-3 shadow-lg shadow-primary/25 hover:bg-primary/90 hover:shadow-primary/40 transition-all disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="w-full bg-primary text-white font-bold py-5 rounded-2xl flex items-center justify-center gap-3 shadow-lg shadow-primary/25 hover:bg-primary/90 hover:shadow-primary/40 transition-all disabled:opacity-70 disabled:cursor-not-allowed transform-gpu"
                 >
                   {status === 'loading' ? (
                     <>
@@ -286,4 +283,5 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default memo(Contact);
+

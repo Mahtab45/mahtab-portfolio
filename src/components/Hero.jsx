@@ -66,7 +66,7 @@ const Hero = ({ currentTheme = 'default' }) => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center pt-24 pb-32 px-6 overflow-hidden bg-[#030712]"
+      className="relative min-h-screen flex items-center justify-center pt-24 pb-32 px-6 overflow-hidden bg-[#030712] transform-gpu"
       onMouseMove={handleMouseMove}
     >
       {/* BACKGROUND ELEMENTS */}
@@ -87,11 +87,11 @@ const Hero = ({ currentTheme = 'default' }) => {
       </div>
 
       {/* CONTENT CONTAINER - 2 Column Layout */}
-      <div className="max-w-7xl mx-auto z-10 relative w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+      <div className="max-w-7xl mx-auto z-10 relative w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center transform-gpu">
 
         {/* LEFT COLUMN - Text Content */}
         <motion.div
-          className="flex flex-col items-center lg:items-start text-center lg:text-left"
+          className="flex flex-col items-center lg:items-start text-center lg:text-left transform-gpu"
           initial="hidden"
           animate="visible"
           variants={containerVariants}
@@ -141,7 +141,8 @@ const Hero = ({ currentTheme = 'default' }) => {
               href="#projects"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="group relative px-6 py-3.5 glass border border-white/10 text-gray-300 rounded-full font-bold flex items-center gap-2 transition-all duration-300 ease-in-out hover:text-primary hover:border-primary/50 hover:bg-primary/10 hover:shadow-xl hover:shadow-primary/30"
+              className="group relative px-6 py-3.5 glass border border-white/10 text-gray-300 rounded-full font-bold flex items-center gap-2 transition-all duration-300 ease-in-out hover:text-primary hover:border-primary/50 hover:bg-primary/10 hover:shadow-xl hover:shadow-primary/30 transform-gpu"
+              aria-label="View Projects"
             >
               <span className="relative z-10 flex items-center gap-2">
                 View Projects <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform duration-300" />
@@ -153,7 +154,8 @@ const Hero = ({ currentTheme = 'default' }) => {
               target="_blank"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="group relative px-6 py-3.5 bg-primary text-white rounded-full font-bold flex items-center gap-2 overflow-hidden shadow-lg shadow-primary/30 hover:shadow-2xl hover:shadow-primary/50 transition-all duration-300 ease-in-out"
+              className="group relative px-6 py-3.5 bg-primary text-white rounded-full font-bold flex items-center gap-2 overflow-hidden shadow-lg shadow-primary/30 hover:shadow-2xl hover:shadow-primary/50 transition-all duration-300 ease-in-out transform-gpu"
+              aria-label="Download Resume"
             >
               <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <span className="relative z-10 flex items-center gap-2">
@@ -170,7 +172,7 @@ const Hero = ({ currentTheme = 'default' }) => {
                 whileHover={{ y: -5 }}
                 className="glass p-5 rounded-2xl border border-white/5 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-300 group relative overflow-hidden flex flex-col items-center text-center transform-gpu"
               >
-                <stat.icon size={22} className="mb-2 text-primary group-hover:scale-110 transition-transform" />
+                <stat.icon size={22} className="mb-2 text-primary group-hover:scale-110 transition-transform" aria-hidden="true" />
                 <div className="text-2xl font-black text-white mb-1">{stat.value}</div>
                 <div className="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{stat.label}</div>
                 <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-300 pointer-events-none" />
@@ -183,7 +185,7 @@ const Hero = ({ currentTheme = 'default' }) => {
 
         {/* RIGHT COLUMN - Image Section */}
         <motion.div
-          className="relative flex flex-col justify-center items-center lg:items-end mt-10 lg:mt-0"
+          className="relative flex flex-col justify-center items-center lg:items-end mt-10 lg:mt-0 transform-gpu"
           initial={{ opacity: 0, scale: 0.9, x: 20 }}
           animate={{ opacity: 1, scale: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.4, type: "spring", stiffness: 80 }}
@@ -199,12 +201,13 @@ const Hero = ({ currentTheme = 'default' }) => {
 
             <motion.img
               src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=800"
-              alt="Mahtab Alam"
-              className="w-full h-full object-cover rounded-[2rem]"
+              alt="Professional portrait of Mahtab Alam"
+              className="w-full h-full object-cover rounded-[2rem] transform-gpu"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.5 }}
               loading="eager"
               decoding="async"
+              fetchpriority="high"
             />
 
             {/* Floating Glass Card Overlay */}
@@ -223,8 +226,8 @@ const Hero = ({ currentTheme = 'default' }) => {
 
           {/* Moved Social Icons */}
           <div className="flex justify-center gap-6 mt-8 z-20 w-full max-w-[280px] sm:max-w-[320px] lg:max-w-md">
-            <SocialIcon href="https://github.com/yourusername" icon={<Github size={24} />} />
-            <SocialIcon href="https://linkedin.com/in/yourusername" icon={<Linkedin size={24} />} />
+            <SocialIcon href="https://github.com/yourusername" icon={<Github size={24} />} ariaLabel="Github Profile" />
+            <SocialIcon href="https://linkedin.com/in/yourusername" icon={<Linkedin size={24} />} ariaLabel="LinkedIn Profile" />
           </div>
 
           {/* Decorative Glow Behind Image */}
@@ -247,22 +250,26 @@ const Hero = ({ currentTheme = 'default' }) => {
   );
 };
 
-const SocialIcon = memo(({ href, icon }) => (
+const SocialIcon = memo(({ href, icon, ariaLabel }) => (
   <motion.a
     href={href}
     target="_blank"
     rel="noopener noreferrer"
     whileHover={{ scale: 1.1, y: -5 }}
     className="p-3 glass rounded-full text-gray-400 border border-white/10 bg-white/5 transition-all duration-300 ease-in-out hover:text-primary hover:border-primary/50 hover:bg-primary/10 hover:shadow-xl hover:shadow-primary/30 transform-gpu"
+    aria-label={ariaLabel}
   >
     {icon}
   </motion.a>
 ));
 
 const FloatingParticles = memo(() => {
+  // Reduce particle count on mobile
+  const particleCount = typeof window !== 'undefined' && window.innerWidth < 768 ? 8 : 15;
+  
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(15)].map((_, i) => (
+      {[...Array(particleCount)].map((_, i) => (
         <motion.div
           key={i}
           initial={{
@@ -287,6 +294,7 @@ const FloatingParticles = memo(() => {
     </div>
   );
 });
+
 
 export default memo(Hero);
 

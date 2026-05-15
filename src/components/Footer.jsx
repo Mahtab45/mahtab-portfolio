@@ -1,19 +1,19 @@
-import React, { useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useRef, memo } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { Github, Linkedin, Mail, ArrowUpRight, Phone } from 'lucide-react';
 
 /* ── X (formerly Twitter) SVG icon ── */
-const XIcon = ({ size = 16 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+const XIcon = memo(({ size = 16 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
   </svg>
-);
+));
 
 const socialLinks = [
-  { icon: Github, label: 'GitHub', href: 'https://github.com' },
-  { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com' },
-  { icon: XIcon, label: 'X', href: 'https://x.com' },
-  { icon: Mail, label: 'Email', href: 'mailto:mahtabalam2896@gmail.com' },
+  { icon: Github, label: 'GitHub Profile', href: 'https://github.com' },
+  { icon: Linkedin, label: 'LinkedIn Profile', href: 'https://linkedin.com' },
+  { icon: XIcon, label: 'X Profile', href: 'https://x.com' },
+  { icon: Mail, label: 'Email Me', href: 'mailto:mahtabalam2896@gmail.com' },
 ];
 
 const navLinks = [
@@ -37,6 +37,8 @@ const itemVariants = {
 
 const Footer = () => {
   const canvasRef = useRef(null);
+  const footerRef = useRef(null);
+  const isInView = useInView(footerRef, { amount: 0.1 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -49,7 +51,7 @@ const Footer = () => {
       canvas.height = canvas.offsetHeight;
     };
     resize();
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', resize, { passive: true });
 
     const N = 30;
     const pts = Array.from({ length: N }, () => ({
@@ -61,6 +63,10 @@ const Footer = () => {
     }));
 
     const draw = () => {
+      if (!isInView) {
+        raf = requestAnimationFrame(draw);
+        return;
+      }
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       pts.forEach(p => {
         p.x += p.vx; p.y += p.vy;
@@ -90,48 +96,43 @@ const Footer = () => {
     };
     draw();
     return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize); };
-  }, []);
+  }, [isInView]);
 
   return (
     <motion.footer
+      ref={footerRef}
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
-      className="relative bg-[#030712] mt-20 overflow-hidden"
+      className="relative bg-[#030712] mt-20 overflow-hidden transform-gpu"
     >
-      {/* Constellation canvas */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full pointer-events-none"
         style={{ opacity: 0.5 }}
+        aria-hidden="true"
       />
 
-      {/* Background glows */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-[350px] h-[350px] bg-primary/5 rounded-full blur-[100px] -translate-y-1/3 translate-x-1/4" />
-        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-secondary/5 rounded-full blur-[90px] translate-y-1/3 -translate-x-1/4" />
+        <div className="absolute top-0 right-0 w-[350px] h-[350px] bg-primary/5 rounded-full blur-[100px] -translate-y-1/3 translate-x-1/4 transform-gpu" />
+        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-secondary/5 rounded-full blur-[90px] translate-y-1/3 -translate-x-1/4 transform-gpu" />
       </div>
 
       <div className="relative z-10">
-
-        {/* ── TOP GLOW BORDER ── */}
         <div className="h-px bg-gradient-to-r from-transparent via-primary/70 to-transparent" />
         <div className="h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent mt-[2px]" />
 
-        {/* ── MAIN GRID ── */}
-        <div className="max-w-7xl mx-auto px-6 pt-14 pb-10">
+        <div className="max-w-7xl mx-auto px-6 pt-14 pb-10 transform-gpu">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
-
-            {/* ── LEFT: Brand ── */}
-            <motion.div variants={itemVariants} className="flex flex-col items-center md:items-start text-center md:text-left">
+            <motion.div variants={itemVariants} className="flex flex-col items-center md:items-start text-center md:text-left transform-gpu">
               <span className="text-3xl font-black bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent tracking-widest mb-6">
                 MAHTAB
               </span>
 
               <div className="mb-7">
                 <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-emerald-500/5 border border-emerald-500/10 backdrop-blur-md relative overflow-hidden group/status">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-emerald-400/5 to-transparent -translate-x-full group-hover/status:translate-x-full transition-transform duration-1000" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-emerald-400/5 to-transparent -translate-x-full group-hover/status:translate-x-full transition-transform duration-1000 transform-gpu" />
 
                   <span className="relative flex h-1.5 w-1.5">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -145,7 +146,6 @@ const Footer = () => {
                 Backend Engineer crafting clean, reliable, and scalable systems that solve real problems.
               </p>
 
-              {/* Social icons */}
               <div className="flex gap-3 justify-center md:justify-start">
                 {socialLinks.map(({ icon: Icon, label, href }) => (
                   <motion.a
@@ -156,17 +156,16 @@ const Footer = () => {
                     aria-label={label}
                     whileHover={{ y: -4, scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="group relative w-10 h-10 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-gray-400 transition-all duration-300 hover:text-primary hover:border-primary/30 hover:bg-primary/10 overflow-hidden shadow-lg hover:shadow-[0_0_20px_rgba(var(--primary-rgb,59,130,246),0.15)] backdrop-blur-sm"
+                    className="group relative w-10 h-10 rounded-xl bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-gray-400 transition-all duration-300 hover:text-primary hover:border-primary/30 hover:bg-primary/10 overflow-hidden shadow-lg hover:shadow-[0_0_20px_rgba(var(--primary-rgb,59,130,246),0.15)] backdrop-blur-sm transform-gpu"
                   >
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-primary/20 to-transparent blur-md" />
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-primary/20 to-transparent blur-md transform-gpu" />
                     <Icon size={16} className="relative z-10 transition-colors duration-300" />
                   </motion.a>
                 ))}
               </div>
             </motion.div>
 
-            {/* ── CENTER: Explore ── */}
-            <motion.div variants={itemVariants} className="flex flex-col items-center">
+            <motion.div variants={itemVariants} className="flex flex-col items-center transform-gpu">
               <div className="w-fit flex flex-col items-center">
                 <div className="relative mb-8 group/title flex flex-col items-center">
                   <h3 className="text-white font-bold text-[11px] tracking-[0.25em] uppercase pb-2.5">
@@ -175,13 +174,12 @@ const Footer = () => {
                   <div className="relative h-px w-8 overflow-hidden mx-auto">
                     <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary" />
                     <motion.div
-                      className="absolute inset-0 bg-white/40"
+                      className="absolute inset-0 bg-white/40 transform-gpu"
                       animate={{ x: ['-100%', '100%'] }}
                       transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
                     />
                   </div>
-                  {/* Accent glow */}
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-4 bg-primary/20 blur-md opacity-0 group-hover/title:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-4 bg-primary/20 blur-md opacity-0 group-hover/title:opacity-100 transition-opacity duration-500 pointer-events-none transform-gpu" />
                 </div>
 
                 <ul className="flex flex-col gap-2 items-start w-full">
@@ -192,6 +190,7 @@ const Footer = () => {
                       whileInView={{ opacity: 1, x: 0 }}
                       transition={{ delay: idx * 0.07, duration: 0.4 }}
                       viewport={{ once: true }}
+                      className="transform-gpu"
                     >
                       <a
                         href={href}
@@ -210,8 +209,7 @@ const Footer = () => {
               </div>
             </motion.div>
 
-            {/* ── RIGHT: Get in touch ── */}
-            <motion.div variants={itemVariants} className="flex flex-col items-center md:items-end">
+            <motion.div variants={itemVariants} className="flex flex-col items-center md:items-end transform-gpu">
               <div className="w-full md:max-w-[260px] flex flex-col items-center md:items-start">
                 <div className="relative mb-8 group/title flex flex-col items-center w-full">
                   <h3 className="text-white font-bold text-[11px] tracking-[0.25em] uppercase pb-2.5">
@@ -220,22 +218,20 @@ const Footer = () => {
                   <div className="relative h-px w-8 overflow-hidden mx-auto">
                     <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary" />
                     <motion.div
-                      className="absolute inset-0 bg-white/40"
+                      className="absolute inset-0 bg-white/40 transform-gpu"
                       animate={{ x: ['-100%', '100%'] }}
                       transition={{ duration: 2.5, repeat: Infinity, ease: "linear", delay: 0.5 }}
                     />
                   </div>
-                  {/* Accent glow */}
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-4 bg-primary/20 blur-md opacity-0 group-hover/title:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-4 bg-primary/20 blur-md opacity-0 group-hover/title:opacity-100 transition-opacity duration-500 pointer-events-none transform-gpu" />
                 </div>
 
                 <div className="flex flex-col gap-3 w-full">
-
-                  {/* Email */}
                   <motion.a
                     href="mailto:mahtabalam2896@gmail.com"
                     whileHover={{ x: 4 }}
-                    className="group flex items-center gap-3 p-4 rounded-2xl border border-white/[0.07] bg-white/[0.03] hover:bg-primary/5 hover:border-primary/30 hover:shadow-[0_0_20px_rgba(var(--primary-rgb,59,130,246),0.08)] transition-all duration-300"
+                    className="group flex items-center gap-3 p-4 rounded-2xl border border-white/[0.07] bg-white/[0.03] hover:bg-primary/5 hover:border-primary/30 hover:shadow-[0_0_20px_rgba(var(--primary-rgb,59,130,246),0.08)] transition-all duration-300 transform-gpu"
+                    aria-label="Email me at mahtabalam2896@gmail.com"
                   >
                     <div className="w-8 h-8 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
                       <Mail size={14} className="text-primary" />
@@ -247,11 +243,11 @@ const Footer = () => {
                     <ArrowUpRight size={13} className="text-gray-600 group-hover:text-primary ml-auto shrink-0 transition-colors" />
                   </motion.a>
 
-                  {/* Phone */}
                   <motion.a
                     href="tel:+919113130267"
                     whileHover={{ x: 4 }}
-                    className="group flex items-center gap-3 p-4 rounded-2xl border border-white/[0.07] bg-white/[0.03] hover:bg-primary/5 hover:border-primary/30 hover:shadow-[0_0_20px_rgba(var(--primary-rgb,59,130,246),0.08)] transition-all duration-300"
+                    className="group flex items-center gap-3 p-4 rounded-2xl border border-white/[0.07] bg-white/[0.03] hover:bg-primary/5 hover:border-primary/30 hover:shadow-[0_0_20px_rgba(var(--primary-rgb,59,130,246),0.08)] transition-all duration-300 transform-gpu"
+                    aria-label="Call me at +91 9113130267"
                   >
                     <div className="w-8 h-8 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
                       <Phone size={14} className="text-primary" />
@@ -262,21 +258,18 @@ const Footer = () => {
                     </div>
                     <ArrowUpRight size={13} className="text-gray-600 group-hover:text-primary ml-auto shrink-0 transition-colors" />
                   </motion.a>
-
                 </div>
               </div>
             </motion.div>
-
           </div>
         </div>
 
-        {/* ── BOTTOM BAR ── */}
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="h-px w-full bg-gradient-to-r from-transparent via-white/[0.1] to-transparent mb-6" />
 
           <motion.div
             variants={itemVariants}
-            className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 text-[11px] sm:text-xs font-medium text-gray-500"
+            className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 text-[11px] sm:text-xs font-medium text-gray-500 transform-gpu"
           >
             <div className="flex items-center gap-2">
               <span className="tracking-wider uppercase">© {new Date().getFullYear()} Mahtab Alam.</span>
@@ -289,7 +282,7 @@ const Footer = () => {
               <motion.span
                 animate={{ scale: [1, 1.25, 1] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
-                className="text-rose-500 inline-block text-[10px] drop-shadow-[0_0_8px_rgba(244,63,94,0.5)]"
+                className="text-rose-500 inline-block text-[10px] drop-shadow-[0_0_8px_rgba(244,63,94,0.5)] transform-gpu"
               >
                 ❤️
               </motion.span>
@@ -299,19 +292,25 @@ const Footer = () => {
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="group flex items-center gap-3 px-4 py-2 rounded-full bg-white/[0.02] border border-white/[0.05] hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-all duration-300 relative overflow-hidden"
+              aria-label="Back to top"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out" />
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/10 to-primary/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out transform-gpu" />
               <span className="tracking-widest text-[10px] sm:text-xs font-semibold uppercase relative z-10">Back to top</span>
               <div className="w-6 h-6 rounded-full bg-white/[0.05] group-hover:bg-primary/20 flex items-center justify-center transition-colors relative z-10">
-                <ArrowUpRight size={12} className="group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform duration-300" />
+                <ArrowUpRight size={12} className="group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform duration-300 transform-gpu" />
               </div>
             </button>
           </motion.div>
         </div>
-
       </div>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+        @keyframes shimmer {
+          100% { transform: translateX(100%); }
+        }
+      `}} />
     </motion.footer>
   );
 };
 
-export default Footer;
+export default memo(Footer);

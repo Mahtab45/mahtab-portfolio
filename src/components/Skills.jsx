@@ -99,10 +99,7 @@ const StableCanvasGlobe = memo(() => {
         };
 
         const render = () => {
-            if (!isInView) {
-                animationFrameId = requestAnimationFrame(render);
-                return;
-            }
+            if (!isInView) return;
 
             const rect = canvas.getBoundingClientRect();
             const width = rect.width;
@@ -203,6 +200,7 @@ const StableCanvasGlobe = memo(() => {
 
             animationFrameId = requestAnimationFrame(render);
         };
+
 
         render();
 
