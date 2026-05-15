@@ -1,18 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import Navbar from './components/Navbar';
 import Background from './components/Background';
 import CursorGlow from './components/CursorGlow';
 import Hero from './components/Hero';
 import PageLoader from './components/PageLoader';
-import About from './components/About';
-import Skills from './components/Skills';
-import Projects from './components/Projects';
-import Experience from './components/Experience';
-import Education from './components/Education';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion';
 
+// Lazy load heavy components for better performance
+const About = lazy(() => import('./components/About'));
+const Skills = lazy(() => import('./components/Skills'));
+const Projects = lazy(() => import('./components/Projects'));
+const Experience = lazy(() => import('./components/Experience'));
+const Education = lazy(() => import('./components/Education'));
+const Contact = lazy(() => import('./components/Contact'));
+const Footer = lazy(() => import('./components/Footer'));
+
+// Minimal premium loading fallback
+const SectionLoader = () => (
+  <div className="w-full h-48 flex items-center justify-center">
+    <div className="w-8 h-8 border-2 border-primary/20 border-t-primary rounded-full animate-spin" />
+  </div>
+);
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -51,17 +59,19 @@ function App() {
 
       <main className="relative z-10 pt-10">
         <Hero currentTheme={theme} />
-        <About />
-        <Skills />
-        <Projects />
-        <Experience />
-        <Education />
-        <Contact />
+        <Suspense fallback={<SectionLoader />}>
+          <About />
+          <Skills />
+          <Projects />
+          <Experience />
+          <Education />
+          <Contact />
+        </Suspense>
       </main>
 
-      <Footer />
-
-
+      <Suspense fallback={null}>
+        <Footer />
+      </Suspense>
 
       {/* Scroll Progress Bar */}
       <motion.div
@@ -73,3 +83,4 @@ function App() {
 }
 
 export default App;
+

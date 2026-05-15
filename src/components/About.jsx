@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, memo } from 'react';
 import { motion } from 'framer-motion';
 import { Server, Zap, Brain, CheckCircle2 } from 'lucide-react';
 
@@ -58,7 +58,7 @@ const childVariants = {
 const About = () => {
 
     return (
-        <section id="about" className="py-20 md:py-24 px-6 relative overflow-visible bg-[#030712]">
+        <section id="about" className="py-20 md:py-24 px-6 relative overflow-visible bg-[#030712] transform-gpu">
 
             {/* Background Glow */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -76,6 +76,7 @@ const About = () => {
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true, margin: "0px 0px -60px 0px" }}
+                            className="transform-gpu"
                         >
                             {/* Label */}
                             <motion.span variants={childVariants} className="text-primary/70 font-black tracking-[0.3em] uppercase text-[10px] mb-4 block">
@@ -87,7 +88,7 @@ const About = () => {
                                 About <span className="bg-gradient-to-r from-primary to-cyan-400 bg-clip-text text-transparent">Me</span>
                             </motion.h2>
 
-                            {/* Description https://vercel.com/mahtab-alam-s-projects/mahtab-portfolio/settings/domains*/}
+                            {/* Description */}
                             <motion.p variants={childVariants} className="text-lg text-gray-400 mb-10 leading-relaxed max-w-xl">
                                 I focus on solving <span className="text-white font-bold">real-world problems</span>, not just writing code.
                                 I enjoy turning complex ideas into simple, usable solutions that create real impact.
@@ -131,7 +132,7 @@ const About = () => {
                                         <motion.li
                                             key={idx}
                                             variants={childVariants}
-                                            className="flex items-center gap-3 text-gray-400 text-sm"
+                                            className="flex items-center gap-3 text-gray-400 text-sm transform-gpu"
                                         >
                                             <CheckCircle2 size={16} className="text-primary shrink-0" />
                                             {item}
@@ -150,11 +151,11 @@ const About = () => {
                             initial="hidden"
                             whileInView="visible"
                             viewport={{ once: true, margin: "0px 0px -60px 0px" }}
-                            className="flex flex-col gap-6"
+                            className="flex flex-col gap-6 transform-gpu"
                         >
 
                             {/* Experience Card */}
-                            <motion.div variants={childVariants}>
+                            <motion.div variants={childVariants} className="transform-gpu">
                                 <div className="overflow-visible py-2">
                                     <motion.div
                                         animate={{ y: [-8, 8, -8] }}
@@ -163,7 +164,7 @@ const About = () => {
                                     >
                                         <motion.div
                                             whileHover={{ y: -4, scale: 1.02, zIndex: 20 }}
-                                            className="glass p-6 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-primary/40 hover:shadow-[0_0_25px_rgba(59,130,246,0.2)] transition-[background-color,border-color,box-shadow] duration-300 ease-out origin-center hover:z-20"
+                                            className="glass p-6 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 hover:border-primary/40 hover:shadow-[0_0_25px_rgba(59,130,246,0.2)] transition-[background-color,border-color,box-shadow] duration-300 ease-out origin-center hover:z-20 transform-gpu"
                                         >
                                             <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-2xl" />
                                             <div className="relative z-10">
@@ -218,4 +219,4 @@ const About = () => {
     );
 };
 
-export default About;
+export default memo(About);

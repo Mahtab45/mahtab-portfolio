@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Github, Linkedin, Palette, ChevronDown, Check } from 'lucide-react';
 import { cn } from '../utils/cn';
@@ -280,8 +280,7 @@ const Navbar = ({ currentTheme, onThemeChange }) => {
         )}
       </AnimatePresence>
     </nav>
-
   );
 };
 
-export default Navbar;
+export default memo(Navbar);

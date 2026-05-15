@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { ExternalLink, ArrowUpRight } from 'lucide-react';
 import SectionHeading from './SectionHeading';
@@ -10,7 +10,6 @@ import winecaveImg from '../assets/projects/wine.jpg';
 import ncbaceImg from '../assets/projects/ncbace.webp';
 
 const projects = [
-
   {
     title: "NCB-ACE",
     desc: "A sports management and coaching platform designed to track player performance, manage training programs, and streamline academy operations.",
@@ -69,7 +68,7 @@ const getTagColor = (tag) => {
   return 'text-gray-400 bg-gray-400/10 border-gray-400/20';
 };
 
-const ProjectCard = ({ project }) => {
+const ProjectCard = memo(({ project }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -110,7 +109,7 @@ const ProjectCard = ({ project }) => {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9 }}
       transition={{ duration: 0.4 }}
-      className="group relative h-[480px] rounded-2xl overflow-hidden glass border border-white/10 bg-white/5 backdrop-blur-lg flex flex-col cursor-pointer"
+      className="group relative h-[480px] rounded-2xl overflow-hidden glass border border-white/10 bg-white/5 backdrop-blur-lg flex flex-col cursor-pointer transform-gpu"
     >
       <div
         style={{ transform: "translateZ(50px)" }}
@@ -123,6 +122,7 @@ const ProjectCard = ({ project }) => {
             alt={project.title}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             loading="lazy"
+            decoding="async"
           />
           {/* Hover Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center backdrop-blur-[2px]">
@@ -180,7 +180,7 @@ const ProjectCard = ({ project }) => {
       <div className="absolute inset-0 pointer-events-none rounded-2xl group-hover:shadow-[0_0_40px_rgba(var(--primary-rgb,59,130,246),0.25)] transition-shadow duration-500" />
     </motion.div>
   );
-};
+});
 
 const Projects = () => {
   const [activeTab, setActiveTab] = useState("All");
@@ -197,10 +197,10 @@ const Projects = () => {
   }, [activeTab]);
 
   return (
-    <section id="projects" className="py-20 md:py-24 px-6 relative overflow-hidden bg-gradient-to-b from-dark/50 to-dark">
+    <section id="projects" className="py-20 md:py-24 px-6 relative overflow-hidden bg-gradient-to-b from-dark/50 to-dark transform-gpu">
       {/* Background Glow Blobs */}
-      <div className="absolute top-0 -left-20 w-96 h-96 bg-primary/20 rounded-full blur-[120px] opacity-20 animate-pulse" />
-      <div className="absolute bottom-0 -right-20 w-96 h-96 bg-secondary/20 rounded-full blur-[120px] opacity-20 animate-pulse delay-700" />
+      <div className="absolute top-0 -left-20 w-96 h-96 bg-primary/20 rounded-full blur-[120px] opacity-20 animate-pulse transform-gpu" />
+      <div className="absolute bottom-0 -right-20 w-96 h-96 bg-secondary/20 rounded-full blur-[120px] opacity-20 animate-pulse delay-700 transform-gpu" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
@@ -215,7 +215,7 @@ const Projects = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex flex-wrap justify-center gap-3 mb-16"
+          className="flex flex-wrap justify-center gap-3 mb-16 transform-gpu"
         >
           {categories.map((cat) => (
             <button
@@ -229,7 +229,7 @@ const Projects = () => {
               {activeTab === cat && (
                 <motion.div
                   layoutId="activeFilter"
-                  className="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-full -z-10 shadow-lg"
+                  className="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-full -z-10 shadow-lg transform-gpu"
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
               )}
@@ -241,7 +241,7 @@ const Projects = () => {
         {/* Projects Grid */}
         <motion.div
           layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transform-gpu"
         >
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project, index) => (
@@ -254,4 +254,5 @@ const Projects = () => {
   );
 };
 
-export default Projects;
+export default memo(Projects);
+

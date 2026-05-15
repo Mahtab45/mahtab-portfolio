@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, memo } from 'react';
 import { motion, useInView } from 'framer-motion';
 import {
   Building2, Calendar, Briefcase, GraduationCap,
@@ -68,11 +68,11 @@ const roles = [
 ];
 
 /* ─── STEP CONNECTOR ────────────────────────────────── */
-const StepConnector = () => {
+const StepConnector = memo(() => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
   return (
-    <div ref={ref} className="hidden lg:flex flex-col items-center justify-center px-2 pt-8 gap-2 shrink-0">
+    <div ref={ref} className="hidden lg:flex flex-col items-center justify-center px-2 pt-8 gap-2 shrink-0 transform-gpu">
       <motion.div
         initial={{ scaleX: 0 }}
         animate={inView ? { scaleX: 1 } : {}}
@@ -90,7 +90,7 @@ const StepConnector = () => {
         initial={{ opacity: 0, scale: 0 }}
         animate={inView ? { opacity: 1, scale: 1 } : {}}
         transition={{ duration: 0.4, delay: 0.8 }}
-        className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 relative overflow-hidden group/badge hover:border-accent/40 hover:shadow-[0_0_15px_var(--color-accent)] transition-all duration-300"
+        className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.04] border border-white/10 relative overflow-hidden group/badge hover:border-accent/40 hover:shadow-[0_0_15px_var(--color-accent)] transition-all duration-300 transform-gpu"
       >
         <div className="absolute inset-0 bg-gradient-to-r from-secondary/10 to-primary/10 opacity-0 group-hover/badge:opacity-100 transition-opacity duration-300" />
         <TrendingUp size={11} className="text-accent relative z-10" />
@@ -111,10 +111,10 @@ const StepConnector = () => {
       </motion.div>
     </div>
   );
-};
+});
 
 /* ─── ROLE CARD ──────────────────────────────────────── */
-const RoleCard = ({ role, index }) => {
+const RoleCard = memo(({ role, index }) => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-60px' });
   const [hovered, setHovered] = useState(false);
@@ -126,14 +126,14 @@ const RoleCard = ({ role, index }) => {
       initial={{ opacity: 0, y: 40 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.7, delay: index * 0.15, ease: 'easeOut' }}
-      className="flex-1 min-w-0"
+      className="flex-1 min-w-0 transform-gpu"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
       <motion.div
         animate={{ y: hovered ? -8 : 0, scale: hovered ? 1.01 : 1 }}
         transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-        className={`relative h-full rounded-3xl overflow-hidden border border-white/[0.06] bg-[#07101f]/90 backdrop-blur-xl transition-all duration-500 group/card ${t.shadowHover}`}
+        className={`relative h-full rounded-3xl overflow-hidden border border-white/[0.06] bg-[#07101f]/90 backdrop-blur-xl transition-all duration-500 group/card ${t.shadowHover} transform-gpu`}
       >
         {/* Glow behind the card content */}
         <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 pointer-events-none" />
@@ -151,7 +151,7 @@ const RoleCard = ({ role, index }) => {
         <motion.div
           animate={{ opacity: hovered ? 0.2 : 0.05 }}
           transition={{ duration: 0.4 }}
-          className={`absolute -top-16 -right-16 w-48 h-48 rounded-full blur-3xl pointer-events-none ${t.glow}`}
+          className={`absolute -top-16 -right-16 w-48 h-48 rounded-full blur-3xl pointer-events-none ${t.glow} transform-gpu`}
         />
 
         {/* Step number — large watermark */}
@@ -219,9 +219,9 @@ const RoleCard = ({ role, index }) => {
                 initial={{ opacity: 0, x: -8 }}
                 animate={inView ? { opacity: 1, x: 0 } : {}}
                 transition={{ delay: 0.4 + i * 0.07 + index * 0.15 }}
-                className="flex items-start gap-3 group/t"
+                className="flex items-start gap-3 group/t transform-gpu"
               >
-                <div className={`mt-0.5 p-1.5 rounded-lg shrink-0 transition-all duration-300 group-hover/t:scale-110 group-hover/t:shadow-lg border ${t.bgLight} ${t.borderLight}`}>
+                <div className={`mt-0.5 p-1.5 rounded-lg shrink-0 transition-all duration-300 group-hover/t:scale-110 group-hover/t:shadow-lg border ${t.bgLight} ${t.borderLight} transform-gpu`}>
                   <task.icon size={12} className={t.text} />
                 </div>
                 <span className="text-gray-400 text-sm leading-relaxed group-hover/t:text-white transition-colors duration-200">
@@ -242,10 +242,10 @@ const RoleCard = ({ role, index }) => {
       </motion.div>
     </motion.div>
   );
-};
+});
 
 /* ─── COMPANY HEADER BAND ───────────────────────────── */
-const CompanyBand = () => {
+const CompanyBand = memo(() => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
 
@@ -255,7 +255,7 @@ const CompanyBand = () => {
       initial={{ opacity: 0, y: 16 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: 0.1 }}
-      className="w-full max-w-2xl mx-auto mb-12 group/band cursor-default"
+      className="w-full max-w-2xl mx-auto mb-12 group/band cursor-default transform-gpu"
     >
       <div className="relative flex items-center gap-5 p-5 rounded-2xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-sm overflow-hidden transition-colors hover:border-white/[0.15] hover:bg-white/[0.04]">
 
@@ -263,9 +263,9 @@ const CompanyBand = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-secondary/5 to-primary/5 opacity-0 group-hover/band:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
         {/* left accent bar */}
-        <div className="absolute left-0 top-4 bottom-4 w-[3px] rounded-full bg-gradient-to-b from-secondary to-primary group-hover/band:shadow-[0_0_15px_var(--color-primary)] transition-shadow duration-500" />
+        <div className="absolute left-0 top-4 bottom-4 w-[3px] rounded-full bg-gradient-to-b from-secondary to-primary group-hover/band:shadow-[0_0_15px_var(--color-primary)] transition-shadow duration-500 transform-gpu" />
 
-        <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-secondary/20 to-primary/20 border border-white/10 flex items-center justify-center shrink-0 ml-3 group-hover/band:scale-110 group-hover/band:rotate-3 transition-transform duration-300">
+        <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-secondary/20 to-primary/20 border border-white/10 flex items-center justify-center shrink-0 ml-3 group-hover/band:scale-110 group-hover/band:rotate-3 transition-transform duration-300 transform-gpu">
           <Building2 size={20} className="text-white" />
         </div>
 
@@ -283,10 +283,10 @@ const CompanyBand = () => {
       </div>
     </motion.div>
   );
-};
+});
 
 /* ─── STATS ROW ─────────────────────────────────────── */
-const StatsRow = () => {
+const StatsRow = memo(() => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
 
@@ -303,7 +303,7 @@ const StatsRow = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: 0.3 }}
-      className="mt-10 grid grid-cols-4 gap-3 max-w-lg mx-auto"
+      className="mt-10 grid grid-cols-4 gap-3 max-w-lg mx-auto transform-gpu"
     >
       {stats.map(({ value, label, textClass, shadowClass, glowBase }, i) => (
         <motion.div
@@ -312,7 +312,7 @@ const StatsRow = () => {
           animate={inView ? { opacity: 1, scale: 1 } : {}}
           transition={{ delay: 0.4 + i * 0.08, type: 'spring', stiffness: 200 }}
           whileHover={{ y: -5, scale: 1.05 }}
-          className={`flex flex-col items-center py-4 px-2 rounded-2xl border border-white/5 bg-white/[0.02] transition-all duration-300 group/stat relative overflow-hidden backdrop-blur-md cursor-default ${shadowClass}`}
+          className={`flex flex-col items-center py-4 px-2 rounded-2xl border border-white/5 bg-white/[0.02] transition-all duration-300 group/stat relative overflow-hidden backdrop-blur-md cursor-default ${shadowClass} transform-gpu`}
         >
           {/* subtle radial background glow on hover */}
           <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover/stat:opacity-100 transition-opacity duration-300 pointer-events-none" />
@@ -326,26 +326,26 @@ const StatsRow = () => {
       ))}
     </motion.div>
   );
-};
+});
 
 /* ─── MAIN ──────────────────────────────────────────── */
 const Experience = () => {
   return (
     <section
       id="experience"
-      className="relative py-20 md:py-28 overflow-hidden bg-[#030712]"
+      className="relative py-20 md:py-28 overflow-hidden bg-[#030712] transform-gpu"
     >
       {/* Atmosphere */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div
           animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
           transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[150px]"
+          className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[150px] transform-gpu"
         />
         <motion.div
           animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
           transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-          className="absolute bottom-0 right-1/4 w-[450px] h-[450px] bg-primary/10 rounded-full blur-[130px]"
+          className="absolute bottom-0 right-1/4 w-[450px] h-[450px] bg-primary/10 rounded-full blur-[130px] transform-gpu"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#030712] via-transparent to-[#030712] opacity-80" />
 
@@ -390,4 +390,4 @@ const Experience = () => {
   );
 };
 
-export default Experience;
+export default memo(Experience);

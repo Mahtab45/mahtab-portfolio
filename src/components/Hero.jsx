@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Github, Linkedin, ChevronRight, Download, Briefcase, Code, CheckCircle2 } from 'lucide-react';
 import { Typewriter } from 'react-simple-typewriter';
@@ -50,16 +50,16 @@ const Hero = ({ currentTheme = 'default' }) => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.15, delayChildren: 0.2 }
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { type: "spring", stiffness: 80, damping: 20 }
+      transition: { type: "spring", stiffness: 100, damping: 25 }
     }
   };
 
@@ -73,14 +73,14 @@ const Hero = ({ currentTheme = 'default' }) => {
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Animated Glow Blobs */}
         <motion.div
-          style={{ x: floatX1, y: floatY1 }}
-          className="absolute top-[-10%] left-[-5%] w-[40vw] h-[40vw] bg-blue-600/10 rounded-full blur-[120px] mix-blend-screen animate-pulse"
+          style={{ x: floatX1, y: floatY1, translateZ: 0 }}
+          className="absolute top-[-10%] left-[-5%] w-[40vw] h-[40vw] bg-blue-600/10 rounded-full blur-[120px] mix-blend-screen animate-pulse transform-gpu"
         />
         <motion.div
-          style={{ x: floatX2, y: floatY2 }}
-          className="absolute bottom-[-10%] right-[-5%] w-[45vw] h-[45vw] bg-purple-600/10 rounded-full blur-[120px] mix-blend-screen animate-pulse delay-1000"
+          style={{ x: floatX2, y: floatY2, translateZ: 0 }}
+          className="absolute bottom-[-10%] right-[-5%] w-[45vw] h-[45vw] bg-purple-600/10 rounded-full blur-[120px] mix-blend-screen animate-pulse delay-1000 transform-gpu"
         />
-        <div className="absolute top-[-20%] right-[-10%] w-[35vw] h-[35vw] bg-teal-500/5 rounded-full blur-[100px] animate-pulse delay-500" />
+        <div className="absolute top-[-20%] right-[-10%] w-[35vw] h-[35vw] bg-teal-500/5 rounded-full blur-[100px] animate-pulse delay-500 transform-gpu" />
 
         {/* Floating Particles */}
         <FloatingParticles />
@@ -97,14 +97,14 @@ const Hero = ({ currentTheme = 'default' }) => {
           variants={containerVariants}
         >
           {/* Top Badge */}
-          <motion.div variants={itemVariants} className="mb-6">
+          <motion.div variants={itemVariants} className="mb-6 transform-gpu">
             <span className="inline-block px-4 py-1.5 text-[10px] font-black tracking-[0.3em] text-white/80 uppercase glass rounded-full border border-white/10 bg-white/5 backdrop-blur-md shadow-[0_0_15px_rgba(255,255,255,0.05)]">
               Welcome to my portfolio
             </span>
           </motion.div>
 
           {/* Main Heading */}
-          <motion.div variants={itemVariants} className="relative mb-6">
+          <motion.div variants={itemVariants} className="relative mb-6 transform-gpu">
             <div className="absolute inset-0 blur-[80px] bg-primary/20 opacity-30 -z-10" />
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[1.1] text-white">
               Hi, I'm <br />
@@ -115,7 +115,7 @@ const Hero = ({ currentTheme = 'default' }) => {
           </motion.div>
 
           {/* Dynamic Role & Tagline */}
-          <motion.div variants={itemVariants} className="mb-8 space-y-4 w-full">
+          <motion.div variants={itemVariants} className="mb-8 space-y-4 w-full transform-gpu">
             <div className="text-2xl md:text-3xl text-gray-400 font-medium flex flex-wrap items-center justify-center lg:justify-start gap-2">
               <span>I specialize in</span>
               <span className="text-white font-bold inline-block min-w-[200px] text-left">
@@ -136,7 +136,7 @@ const Hero = ({ currentTheme = 'default' }) => {
           </motion.div>
 
           {/* CTA Buttons */}
-          <motion.div variants={itemVariants} className="flex flex-row flex-wrap items-center justify-center lg:justify-start gap-4 mb-12">
+          <motion.div variants={itemVariants} className="flex flex-row flex-wrap items-center justify-center lg:justify-start gap-4 mb-12 transform-gpu">
             <motion.a
               href="#projects"
               whileHover={{ scale: 1.05 }}
@@ -163,12 +163,12 @@ const Hero = ({ currentTheme = 'default' }) => {
           </motion.div>
 
           {/* Stats Row */}
-          <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-2xl mb-8 lg:mb-0">
+          <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-2xl mb-8 lg:mb-0 transform-gpu">
             {stats.map((stat, idx) => (
               <motion.div
                 key={idx}
                 whileHover={{ y: -5 }}
-                className="glass p-5 rounded-2xl border border-white/5 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-300 group relative overflow-hidden flex flex-col items-center text-center"
+                className="glass p-5 rounded-2xl border border-white/5 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all duration-300 group relative overflow-hidden flex flex-col items-center text-center transform-gpu"
               >
                 <stat.icon size={22} className="mb-2 text-primary group-hover:scale-110 transition-transform" />
                 <div className="text-2xl font-black text-white mb-1">{stat.value}</div>
@@ -192,7 +192,7 @@ const Hero = ({ currentTheme = 'default' }) => {
           <motion.div
             animate={{ y: [-10, 10, -10] }}
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            className="relative w-full max-w-[280px] sm:max-w-[320px] lg:max-w-md aspect-square lg:aspect-[4/5] rounded-[2rem] overflow-hidden group shadow-2xl shadow-primary/20 hover:shadow-primary/40 transition-shadow duration-500"
+            className="relative w-full max-w-[280px] sm:max-w-[320px] lg:max-w-md aspect-square lg:aspect-[4/5] rounded-[2rem] overflow-hidden group shadow-2xl shadow-primary/20 hover:shadow-primary/40 transition-shadow duration-500 transform-gpu"
           >
             <div className="absolute inset-0 bg-gradient-to-t from-[#030712] via-transparent to-transparent z-10 opacity-60" />
             <div className="absolute inset-0 rounded-[2rem] border-2 border-primary/40 group-hover:border-primary/80 transition-colors duration-500 z-20 pointer-events-none" />
@@ -203,13 +203,15 @@ const Hero = ({ currentTheme = 'default' }) => {
               className="w-full h-full object-cover rounded-[2rem]"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.5 }}
+              loading="eager"
+              decoding="async"
             />
 
             {/* Floating Glass Card Overlay */}
             <motion.div
               animate={{ y: [-5, 5, -5] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              className="absolute bottom-6 right-6 z-30 glass p-4 rounded-2xl border border-white/20 bg-white/5 backdrop-blur-xl shadow-2xl min-w-[200px]"
+              className="absolute bottom-6 right-6 z-30 glass p-4 rounded-2xl border border-white/20 bg-white/5 backdrop-blur-xl shadow-2xl min-w-[200px] transform-gpu"
             >
               <div className="flex flex-col gap-1">
                 <span className="text-white font-bold text-sm">Software Engineer</span>
@@ -226,7 +228,7 @@ const Hero = ({ currentTheme = 'default' }) => {
           </div>
 
           {/* Decorative Glow Behind Image */}
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-primary/20 blur-[100px] -z-10 rounded-full opacity-50 pointer-events-none" />
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-primary/20 blur-[100px] -z-10 rounded-full opacity-50 pointer-events-none transform-gpu" />
         </motion.div>
       </div>
 
@@ -245,19 +247,19 @@ const Hero = ({ currentTheme = 'default' }) => {
   );
 };
 
-const SocialIcon = ({ href, icon }) => (
+const SocialIcon = memo(({ href, icon }) => (
   <motion.a
     href={href}
     target="_blank"
     rel="noopener noreferrer"
     whileHover={{ scale: 1.1, y: -5 }}
-    className="p-3 glass rounded-full text-gray-400 border border-white/10 bg-white/5 transition-all duration-300 ease-in-out hover:text-primary hover:border-primary/50 hover:bg-primary/10 hover:shadow-xl hover:shadow-primary/30"
+    className="p-3 glass rounded-full text-gray-400 border border-white/10 bg-white/5 transition-all duration-300 ease-in-out hover:text-primary hover:border-primary/50 hover:bg-primary/10 hover:shadow-xl hover:shadow-primary/30 transform-gpu"
   >
     {icon}
   </motion.a>
-);
+));
 
-const FloatingParticles = () => {
+const FloatingParticles = memo(() => {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {[...Array(15)].map((_, i) => (
@@ -279,11 +281,12 @@ const FloatingParticles = () => {
             ease: "linear",
             delay: Math.random() * 20
           }}
-          className="absolute w-1 h-1 bg-white/20 rounded-full blur-[1px]"
+          className="absolute w-1 h-1 bg-white/20 rounded-full blur-[1px] transform-gpu"
         />
       ))}
     </div>
   );
-};
+});
 
-export default Hero;
+export default memo(Hero);
+

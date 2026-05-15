@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useRef, useState, memo, useMemo } from 'react';
+import { motion, useInView } from 'framer-motion';
 
 const skillsData = [
     { name: 'PHP', slug: 'php', color: '#777BB4' },
@@ -13,15 +13,16 @@ const skillsData = [
     { name: 'Python', slug: 'python', color: '#3776AB' },
     { name: 'Laravel', slug: 'laravel', color: '#FF2D20' },
     { name: 'WordPress', slug: 'wordpress', color: '#21759B' },
-    { name: 'AJAX', slug: 'json', color: '#FFD700' }, // Using JSON icon for AJAX (technically relevant/high-fidelity)
+    { name: 'AJAX', slug: 'json', color: '#FFD700' }, 
     { name: 'Tailwind CSS', slug: 'tailwindcss', color: '#06B6D4' },
     { name: 'Github', slug: 'github', color: '#ffffff' },
 ];
 
-const StableCanvasGlobe = () => {
+const StableCanvasGlobe = memo(() => {
     const canvasRef = useRef(null);
     const containerRef = useRef(null);
     const [isReady, setIsReady] = useState(false);
+    const isInView = useInView(containerRef, { amount: 0.1 });
 
     const points = useRef([]);
     const rotation = useRef({ x: 0, y: 0 });
@@ -33,9 +34,8 @@ const StableCanvasGlobe = () => {
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d', { alpha: true });
 
-        // 1. Precise 14 Point Distribution
         const n = skillsData.length;
         let processedCount = 0;
 
@@ -69,9 +69,11 @@ const StableCanvasGlobe = () => {
         const resize = () => {
             if (!containerRef.current) return;
             const rect = containerRef.current.getBoundingClientRect();
-            canvas.width = rect.width;
-            canvas.height = rect.height;
-            radius.current = Math.min(canvas.width, canvas.height) * 0.35;
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            radius.current = Math.min(rect.width, rect.height) * 0.35;
             perspective.current = radius.current * 2;
         };
 
@@ -97,9 +99,18 @@ const StableCanvasGlobe = () => {
         };
 
         const render = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
+            if (!isInView) {
+                animationFrameId = requestAnimationFrame(render);
+                return;
+            }
+
+            const rect = canvas.getBoundingClientRect();
+            const width = rect.width;
+            const height = rect.height;
+            
+            ctx.clearRect(0, 0, width, height);
+            const centerX = width / 2;
+            const centerY = height / 2;
 
             if (!mouse.current.isDown) {
                 rotation.current.x = momentum.current.x;
@@ -108,19 +119,15 @@ const StableCanvasGlobe = () => {
                 momentum.current.y = momentum.current.y * 0.98 + (0.005 * 0.02);
             }
 
-            // Rotate points first
             points.current.forEach(p => {
                 rotateX(p, rotation.current.x);
                 rotateY(p, rotation.current.y);
             });
 
-            // Pass 1: Strict Single Target Hover Detection
             let closestIdx = -1;
-            // let minDis = 50; // Unified threshold
             let minDis = 80;
 
             points.current.forEach((p, i) => {
-                // if (p.z > 0) return; // Face side only
                 const f = perspective.current / (perspective.current + p.z);
                 const px = p.x * f + centerX;
                 const py = p.y * f + centerY;
@@ -131,15 +138,12 @@ const StableCanvasGlobe = () => {
                 }
             });
 
-            // Pass 2: Painter's Algorithm Sort
-            //const sorted = [...points.current].sort((a, b) => b.z - a.z);
             const sorted = [...points.current].sort((a, b) => a.z - b.z);
 
             sorted.forEach((p) => {
                 const originalIdx = points.current.indexOf(p);
                 const isHovered = originalIdx === closestIdx;
 
-                // Scale Interpolation (LERP)
                 const targetS = isHovered ? 1.5 : 1.0;
                 p.currentScale += (targetS - p.currentScale) * 0.15;
 
@@ -151,20 +155,14 @@ const StableCanvasGlobe = () => {
                 const depthScale = 0.8 + (p.z / radius.current) * 0.2 + 0.1;
                 const renderScale = p.currentScale * depthScale;
                 const size = baseSize * renderScale;
-                // const opacity = 0.4 + (p.z / radius.current) * 0.4 + 0.2;
-                const opacity = 1;
 
-
-                // Glow Effect
                 if (isHovered) {
-                    // ctx.shadowBlur = 20;
-                    ctx.shadowBlur = isHovered ? 25 : 8;
+                    ctx.shadowBlur = 25;
                     ctx.shadowColor = p.skill.color;
                 } else {
                     ctx.shadowBlur = 0;
                 }
 
-                // Bubble
                 ctx.beginPath();
                 ctx.arc(px, py, size / 1.8, 0, Math.PI * 2);
                 ctx.fillStyle = isHovered ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.05)';
@@ -173,13 +171,10 @@ const StableCanvasGlobe = () => {
                 ctx.lineWidth = 1;
                 ctx.stroke();
 
-                // Icon
-                // ctx.globalAlpha = isHovered ? 1 : opacity;
                 ctx.globalAlpha = 1;
                 ctx.drawImage(p.img, px - size / 2, py - size / 2, size, size);
             });
 
-            // Pass 3: Draw Tooltip on TOP of everything
             if (closestIdx !== -1) {
                 const p = points.current[closestIdx];
                 const f = perspective.current / (perspective.current + p.z);
@@ -190,13 +185,12 @@ const StableCanvasGlobe = () => {
                 ctx.save();
                 ctx.translate(px, py + size / 2 + 20);
                 ctx.fillStyle = '#fff';
-                ctx.font = 'bold 14px sans-serif'; // Use standard sans-serif for reliability
+                ctx.font = 'bold 14px sans-serif';
                 ctx.textAlign = 'center';
                 ctx.shadowBlur = 10;
                 ctx.shadowColor = p.skill.color;
                 ctx.fillText(p.skill.name.toUpperCase(), 0, 0);
 
-                // Add a subtle underline
                 ctx.beginPath();
                 ctx.moveTo(-15, 6);
                 ctx.lineTo(15, 6);
@@ -291,10 +285,10 @@ const StableCanvasGlobe = () => {
             canvas.removeEventListener('pointermove', handlePointerMove);
             canvas.removeEventListener('pointerup', handlePointerUp);
         };
-    }, []);
+    }, [isInView]);
 
     return (
-        <div ref={containerRef} className="w-full h-full relative cursor-grab active:cursor-grabbing">
+        <div ref={containerRef} className="w-full h-full relative cursor-grab active:cursor-grabbing transform-gpu">
             <canvas ref={canvasRef} className={`w-full h-full transition-opacity duration-1000 ${isReady ? 'opacity-100' : 'opacity-0'}`} />
 
             {!isReady && (
@@ -303,13 +297,12 @@ const StableCanvasGlobe = () => {
                 </div>
             )}
 
-            {/* Atmospheric Atmosphere */}
-            <div className="absolute inset-0 m-auto w-36 h-36 bg-primary/10 blur-[100px] rounded-full pointer-events-none"></div>
+            <div className="absolute inset-0 m-auto w-36 h-36 bg-primary/10 blur-[100px] rounded-full pointer-events-none transform-gpu"></div>
         </div>
     );
-};
+});
 
-const AutoCodingTerminal = () => {
+const AutoCodingTerminal = memo(() => {
     const [typedCode, setTypedCode] = useState('');
 
     const fullCode = `> node app.js
@@ -391,12 +384,12 @@ function start(dev) {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="relative w-full max-w-lg"
+            className="relative w-full max-w-lg transform-gpu"
         >
             <motion.div
                 animate={{ y: [-10, 10, -10] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="bg-[#020617] border border-white/10 rounded-2xl p-5 shadow-xl relative overflow-hidden h-[450px] md:h-[450px] flex flex-col"
+                className="bg-[#020617] border border-white/10 rounded-2xl p-5 shadow-xl relative overflow-hidden h-[450px] md:h-[450px] flex flex-col transform-gpu"
             >
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-blue-500/10 blur-[80px] pointer-events-none rounded-full" />
 
@@ -427,7 +420,7 @@ function start(dev) {
       `}</style>
         </motion.div>
     );
-};
+});
 
 
 const Skills = () => {
@@ -435,7 +428,7 @@ const Skills = () => {
         <section id="skills" className="py-20 md:py-24 px-6 relative overflow-hidden flex items-center justify-center min-h-[90vh]">
             <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-20 items-center">
 
-                <div className="relative z-10 flex flex-col items-start w-full">
+                <div className="relative z-10 flex flex-col items-start w-full transform-gpu">
                     <motion.span
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -467,7 +460,7 @@ const Skills = () => {
                     <AutoCodingTerminal />
                 </div>
 
-                <div className="relative h-[600px] md:h-[700px] w-full bg-dark/20 rounded-[4rem] border border-white/5 overflow-hidden shadow-2xl backdrop-blur-xl">
+                <div className="relative h-[600px] md:h-[700px] w-full bg-dark/20 rounded-[4rem] border border-white/5 overflow-hidden shadow-2xl backdrop-blur-xl transform-gpu">
                     <StableCanvasGlobe />
 
                     <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.4em] text-gray-600 font-bold pointer-events-none">
@@ -479,4 +472,5 @@ const Skills = () => {
     );
 };
 
-export default Skills;
+export default memo(Skills);
+
