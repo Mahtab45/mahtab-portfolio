@@ -48,10 +48,18 @@ const Contact = () => {
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
+      let data = {};
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        data = await response.json();
+      } else {
+        // Fallback for non-JSON responses (like HTML 404/500 errors)
+        const text = await response.text();
+        console.error('Server returned non-JSON response:', text);
+      }
 
       if (!response.ok) {
-        throw new Error(data.error || 'Something went wrong. Please try again.');
+        throw new Error(data.error || `Server error (${response.status}): Something went wrong.`);
       }
 
       setStatus('success');
@@ -73,7 +81,7 @@ const Contact = () => {
       <div className="max-w-7xl mx-auto relative">
 
         {/* Toast Notification */}
-        <div className="fixed bottom-8 right-8 z-50 flex flex-col gap-4 pointer-events-none">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none px-4">
           <AnimatePresence>
             {status === 'success' && (
               <motion.div
